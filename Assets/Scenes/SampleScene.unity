@@ -264,12 +264,12 @@ MonoBehaviour:
   rotationSpeed: 12
   attackForward: {x: 0.75, y: 0, z: 0}
   attackBackward: {x: 0, y: 0, z: 0}
-  attackUpward: {x: 0, y: 0, z: 0}
-  attackDownward: {x: 0, y: 0, z: 0}
-  rotForward: {x: 0, y: 0, z: 0}
-  rotBackward: {x: 0, y: 0, z: 0}
-  rotUpward: {x: 0, y: 0, z: 0}
-  rotDownward: {x: 0, y: 0, z: 0}
+  attackUpward: {x: 0.5, y: -1.75, z: 0}
+  attackDownward: {x: 1, y: 0, z: 0}
+  rotForward: {x: 0, y: 0, z: -60}
+  rotBackward: {x: 0, y: 0, z: -10}
+  rotUpward: {x: 0, y: 0, z: -80}
+  rotDownward: {x: 0, y: 0, z: -80}
 --- !u!1 &431157956
 GameObject:
   m_ObjectHideFlags: 0

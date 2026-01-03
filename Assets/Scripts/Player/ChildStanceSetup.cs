@@ -25,6 +25,8 @@ public class ChildStanceSetup : MonoBehaviour
     private Vector3 targetPosition;
     private Quaternion targetRotation;
 
+    public bool Locked { get; set; }
+
     void Awake()
     {
         if (baseStance == null)
@@ -33,7 +35,8 @@ public class ChildStanceSetup : MonoBehaviour
 
     void Update()
     {
-        if (baseStance == null) return;
+        if (baseStance == null || Locked)
+            return;
 
         switch (baseStance.stance)
         {
@@ -63,8 +66,17 @@ public class ChildStanceSetup : MonoBehaviour
                 break;
         }
 
-        transform.localPosition = Vector3.Lerp(transform.localPosition, targetPosition, Time.deltaTime * lerpSpeed);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, Time.deltaTime * lerpSpeed);
+        transform.localPosition = Vector3.Lerp(
+            transform.localPosition,
+            targetPosition,
+            Time.deltaTime * lerpSpeed
+        );
+
+        transform.localRotation = Quaternion.Lerp(
+            transform.localRotation,
+            targetRotation,
+            Time.deltaTime * lerpSpeed
+        );
     }
 
     public Vector3 GetCurrentTargetPosition() => targetPosition;

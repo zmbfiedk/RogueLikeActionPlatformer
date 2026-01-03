@@ -39,13 +39,16 @@ public class PlayerBaseAttack : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.V) && !attacking && !returning)
+        if (Input.GetMouseButtonDown(0) || Input.GetKey(KeyCode.V) && !attacking && !returning) {
             StartAttack();
+        }
+
 
         if (attacking)
             DoAttack();
         else if (returning)
             DoReturn();
+
     }
 
     void StartAttack()
@@ -53,6 +56,8 @@ public class PlayerBaseAttack : MonoBehaviour
         if (baseStance.stance == BaseStanceSetup.Stance.chieved ||
             baseStance.stance == BaseStanceSetup.Stance.running)
             return;
+
+        childStance.Locked = true;
 
         returnPos = childStance.GetCurrentTargetPosition();
         returnRot = childStance.GetCurrentTargetRotation();
@@ -62,6 +67,7 @@ public class PlayerBaseAttack : MonoBehaviour
 
         attacking = true;
     }
+
 
     void DoAttack()
     {
@@ -99,8 +105,13 @@ public class PlayerBaseAttack : MonoBehaviour
         );
 
         if (Vector3.Distance(transform.localPosition, returnPos) < 0.01f)
+        {
             returning = false;
+
+            childStance.Locked = false;
+        }
     }
+
 
     Vector3 GetAttackPosition(BaseStanceSetup.Stance stance)
     {
