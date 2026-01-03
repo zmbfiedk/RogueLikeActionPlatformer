@@ -1,9 +1,7 @@
-using System;
 using UnityEngine;
 
 public class BaseStanceSetup : MonoBehaviour
 {
-
     public enum Stance
     {
         chieved,
@@ -16,20 +14,12 @@ public class BaseStanceSetup : MonoBehaviour
 
     public Stance stance = Stance.chieved;
 
-    private float hDirection;
-    private float vDirection;
-
     private PlayerMove playerMove;
+    private float stanceTimer;
 
-    [Header("Stance Switching Cooldown")]
     [SerializeField] private float stanceCooldown = 0.5f;
-    private float stanceTimer = 0f;
 
-    [Header("Running override")]
-    [SerializeField] private float stopThreshold = 0.05f;
-    private bool runningOverride = false;
-
-    void Start()
+    void Awake()
     {
         playerMove = GetComponentInParent<PlayerMove>();
     }
@@ -37,71 +27,40 @@ public class BaseStanceSetup : MonoBehaviour
     void Update()
     {
         if (stanceTimer > 0f)
-        {
             stanceTimer -= Time.deltaTime;
-        }
 
-        hDirection = Input.GetAxis("Horizontal");
-        vDirection = Input.GetAxis("Vertical");
+        if (playerMove == null) return;
 
-        if (playerMove != null && playerMove.IsSprinting)
+        float h = playerMove.RawHorizontalInput;
+        float v = Input.GetAxisRaw("Vertical");
+
+        // Running override
+        if (playerMove.IsSprinting)
         {
-            if (stance != Stance.running)
-            {
-                stance = Stance.running;
-            }
-
-            runningOverride = true;
+            stance = Stance.running;
             stanceTimer = 0f;
             return;
         }
 
-        if (runningOverride)
+        // Stance mode
+        if (Input.GetMouseButton(1) && stanceTimer <= 0f)
         {
-            if (playerMove == null || Mathf.Abs(playerMove.CurrentSpeed) <= stopThreshold)
+            Stance newStance = Stance.forward;
+
+            if (Mathf.Abs(h) > 0.1f)
+                newStance = h > 0 ? Stance.forward : Stance.backward;
+            else if (Mathf.Abs(v) > 0.1f)
+                newStance = v > 0 ? Stance.upward : Stance.downward;
+
+            if (newStance != stance)
             {
-                runningOverride = false;
-                stance = Stance.chieved;
+                stance = newStance;
                 stanceTimer = stanceCooldown;
             }
-            else
-            {
-                stance = Stance.running;
-                return;
-            }
         }
-
-        if (Input.GetMouseButton(1))
+        else if (!Input.GetMouseButton(1))
         {
-
-            if (stanceTimer <= 0f)
-            {
-
-                Stance newStance = Stance.forward; 
-
-                if (Mathf.Abs(hDirection) > 0.1f)
-                {
-                    newStance = hDirection > 0 ? Stance.forward : Stance.backward;
-                }
-                else if (Mathf.Abs(vDirection) > 0.1f)
-                {
-                    newStance = vDirection > 0 ? Stance.upward : Stance.downward;
-                }
-
-                if (newStance != stance)
-                {
-                    stance = newStance;
-                    stanceTimer = stanceCooldown;
-                }
-            }
-        }
-        else
-        {
-            // Reset to idle when button is not held
-            if (!runningOverride)
-            {
-                stance = Stance.chieved;
-            }
+            stance = Stance.chieved;
         }
     }
 }

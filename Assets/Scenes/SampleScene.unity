@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 237133578}
   - component: {fileID: 237133577}
   - component: {fileID: 237133579}
+  - component: {fileID: 237133580}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -178,8 +179,7 @@ MonoBehaviour:
   runningRotation: {x: 0, y: 0, z: 135}
   upwardRotation: {x: 0, y: 0, z: 80}
   downwardRotation: {x: 0, y: 0, z: -80}
-  positionLerpSpeed: 12
-  rotationLerpSpeed: 12
+  lerpSpeed: 12
 --- !u!212 &237133578
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -247,6 +247,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b079e4c28020df44880b7d035619a67f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &237133580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237133575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9621a486e44dcc1459056e7bf2bbf78a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackSpeed: 8
+  returnSpeed: 10
+  rotationSpeed: 12
+  attackForward: {x: 0.75, y: 0, z: 0}
+  attackBackward: {x: 0, y: 0, z: 0}
+  attackUpward: {x: 0, y: 0, z: 0}
+  attackDownward: {x: 0, y: 0, z: 0}
+  rotForward: {x: 0, y: 0, z: 0}
+  rotBackward: {x: 0, y: 0, z: 0}
+  rotUpward: {x: 0, y: 0, z: 0}
+  rotDownward: {x: 0, y: 0, z: 0}
 --- !u!1 &431157956
 GameObject:
   m_ObjectHideFlags: 0
@@ -1007,13 +1030,6 @@ MonoBehaviour:
   sprintSpeed: 17
   acceleration: 10
   deceleration: 15
-  wallLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  wallBounceForce: 2
-  wallInputLockTime: 0.15
-  directionLockThreshold: 0.5
-  facingChangeSpeed: 8
   rotationSpeed: 10
   sprintLeanAngle: 15
 --- !u!212 &1732253935
@@ -1116,7 +1132,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stance: 0
   stanceCooldown: 0.75
-  stopThreshold: 0.05
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
