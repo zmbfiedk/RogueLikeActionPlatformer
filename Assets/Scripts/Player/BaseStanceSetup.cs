@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 
 public class BaseStanceSetup : MonoBehaviour
 {
+
     public enum Stance
     {
         chieved,
@@ -21,10 +23,10 @@ public class BaseStanceSetup : MonoBehaviour
 
     [Header("Stance Switching Cooldown")]
     [SerializeField] private float stanceCooldown = 0.5f;
-    private float stanceTimer = 0f; 
+    private float stanceTimer = 0f;
 
     [Header("Running override")]
-    [SerializeField] private float stopThreshold = 0.05f; 
+    [SerializeField] private float stopThreshold = 0.05f;
     private bool runningOverride = false;
 
     void Start()
@@ -60,7 +62,7 @@ public class BaseStanceSetup : MonoBehaviour
             {
                 runningOverride = false;
                 stance = Stance.chieved;
-                stanceTimer = stanceCooldown; 
+                stanceTimer = stanceCooldown;
             }
             else
             {
@@ -69,27 +71,36 @@ public class BaseStanceSetup : MonoBehaviour
             }
         }
 
-        if (!runningOverride && stanceTimer <= 0f)
+        if (Input.GetMouseButton(1))
         {
-            Stance newStance = stance;
 
-            if (Mathf.Abs(hDirection) > 0.1f)
+            if (stanceTimer <= 0f)
             {
-                newStance = hDirection > 0 ? Stance.forward : Stance.backward;
-            }
-            else if (Mathf.Abs(vDirection) > 0.1f)
-            {
-                newStance = vDirection > 0 ? Stance.upward : Stance.downward;
-            }
-            else
-            {
-                newStance = Stance.chieved;
-            }
 
-            if (newStance != stance)
+                Stance newStance = Stance.forward; 
+
+                if (Mathf.Abs(hDirection) > 0.1f)
+                {
+                    newStance = hDirection > 0 ? Stance.forward : Stance.backward;
+                }
+                else if (Mathf.Abs(vDirection) > 0.1f)
+                {
+                    newStance = vDirection > 0 ? Stance.upward : Stance.downward;
+                }
+
+                if (newStance != stance)
+                {
+                    stance = newStance;
+                    stanceTimer = stanceCooldown;
+                }
+            }
+        }
+        else
+        {
+            // Reset to idle when button is not held
+            if (!runningOverride)
             {
-                stance = newStance;
-                stanceTimer = stanceCooldown;
+                stance = Stance.chieved;
             }
         }
     }
